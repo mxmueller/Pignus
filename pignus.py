@@ -1,21 +1,27 @@
 import random
 import string
-import tkinter
+import eel
+import eel.browsers
 
-# User UI
-from tkinter import LEFT, END
-from ttkthemes import themed_tk as tk
+eel.init('web')
 
+@eel.expose
+def connection(param):
+    print('Response:', True, param)
+    return 'Response', True, param
 
+@eel.expose
 class Password:
     def __init__(self):
         self.length = None
         self.Caps = None
 
+    @eel.expose
     def getPassword(self):
         result = self.setPasswordFromChoice()
         return result
 
+    @eel.expose
     def setPasswordFromChoice(self):
         if self.Caps:
             letters = string.ascii_letters
@@ -24,7 +30,7 @@ class Password:
 
         return ''.join(random.choice(letters) for i in range(self.length))
 
-
+@eel.expose
 class Salting:
     def __init__(self):
         self.input = None
@@ -67,81 +73,22 @@ class Salting:
     def getSalt(self):
         return random.choice(string.punctuation)
 
-
-# gui
-pignusGui = tk.ThemedTk()
-pignusGui.get_themes()
-pignusGui.set_theme("blue")
-pignusGui.title("Pignus - Advanced password generator")
-pignusGui.geometry("400x500")
-
-scaleLengthLabel = tkinter.Label(pignusGui, text='Set password length:')
-scaleLengthLabel.pack(padx=15, pady=4, fill='both')
-
-scaleLengthWidget = tkinter.Scale(pignusGui, from_=0, to=50, orient=tkinter.HORIZONTAL)
-scaleLengthWidget.set(10)
-scaleLengthWidget.pack(padx=15, pady=4, fill='both')
-
-scaleSaltLengthLabel = tkinter.Label(pignusGui, text='Percentage of letters to be salted:')
-scaleSaltLengthLabel.pack(padx=15, pady=4, fill='both')
-
-scaleSaltLengthWidget = tkinter.Scale(pignusGui, from_=0, to=100, orient=tkinter.HORIZONTAL)
-scaleSaltLengthWidget.set(35)
-scaleSaltLengthWidget.pack(padx=15, pady=4, fill='both')
-
-
-def saltPasswordButtonPress():
+@eel.expose
+def saltPasswordButtonPress(jsPasswordString, jsRange, jsEnforceLength):
     userSaltingPreferences = Salting()
-    userSaltingPreferences.input = passwordEntry.get()
-    userSaltingPreferences.specialCharsLength = scaleSaltLengthWidget.get()
-    userSaltingPreferences.enforceMaxLength = checkbuttonEnforceLengthWidgetVar.get()
-    saltEntry.delete(0, END)
-    saltEntry.insert(0, userSaltingPreferences.getSaltedPassword())
+    userSaltingPreferences.input = jsPasswordString
+    userSaltingPreferences.specialCharsLength = int(jsRange)
+    userSaltingPreferences.enforceMaxLength = jsEnforceLength
+    return userSaltingPreferences.getSaltedPassword()
 
-
-def passwordButtonPress():
+@eel.expose
+def passwordButtonPress(jsLength, jsCaps):
     userPasswordPreferences = Password()
-    userPasswordPreferences.length = scaleLengthWidget.get()
-    userPasswordPreferences.Caps = checkbuttonCapsWidgetVar.get()
-    passwordEntry.delete(0, END)
-    passwordEntry.insert(0, userPasswordPreferences.getPassword())
+    userPasswordPreferences.length = int(jsLength)
+    userPasswordPreferences.Caps = jsCaps
+    return userPasswordPreferences.getPassword()
 
-    if checkbuttonAutoSaltWidgetVar.get():
-        saltPasswordButtonPress()
+   # if checkbuttonAutoSaltWidgetVar.get():
+     #   saltPasswordButtonPress()
 
-
-checkbuttonCapsWidgetVar = tkinter.IntVar()
-checkbuttonCapsWidget = tkinter.Checkbutton(pignusGui, variable=checkbuttonCapsWidgetVar,
-                                            text="Use upper and lower case letters")
-checkbuttonCapsWidget.select()
-checkbuttonCapsWidget.pack(padx=15, pady=4, fill='both')
-
-checkbuttonAutoSaltWidgetVar = tkinter.IntVar()
-checkbuttonAutoSaltWidget = tkinter.Checkbutton(pignusGui, variable=checkbuttonAutoSaltWidgetVar,
-                                                text="Automatically salt generated text password")
-checkbuttonAutoSaltWidget.select()
-checkbuttonAutoSaltWidget.pack(padx=15, pady=4, fill='both')
-
-checkbuttonEnforceLengthWidgetVar = tkinter.IntVar()
-checkbuttonEnforceLengthWidget = tkinter.Checkbutton(pignusGui, variable=checkbuttonEnforceLengthWidgetVar,
-                                                text="Keep password length when salting")
-checkbuttonEnforceLengthWidget.select()
-checkbuttonEnforceLengthWidget.pack(padx=15, pady=4, fill='both')
-
-passwordEntry = tkinter.Entry(pignusGui)
-passwordButton = tkinter.Button(pignusGui, text="Start entire process", command=passwordButtonPress)
-
-saltEntry = tkinter.Entry(pignusGui)
-saltButton = tkinter.Button(pignusGui, text="Just Salt", command=saltPasswordButtonPress)
-
-passwordLabel = tkinter.Label(pignusGui, text='Text password:')
-saltLabel = tkinter.Label(pignusGui, text='Salted password:')
-
-passwordLabel.pack(padx=15, pady=4, fill='both')
-passwordEntry.pack(padx=15, pady=4, fill='both')
-saltLabel.pack(padx=15, pady=4, fill='both')
-saltEntry.pack(padx=15, pady=4, fill='both')
-passwordButton.pack(padx=15, pady=3, fill='both')
-saltButton.pack(padx=15, pady=6, fill='both')
-
-pignusGui.mainloop()
+eel.start('index.html', mode='chrome' , size=(900, 800), port=8000  ,host='localhost',disable_cache=True, close_callback='close_callback', )

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Genius password generator</title>
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+        integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="Theme/neon-glow/css/bootstrap4-neon-glow.min.css">
+
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link rel='stylesheet' href='//cdn.jsdelivr.net/font-hack/2.020/css/hack.min.css'>
+
+    <script type="text/javascript" src="/eel.js"></script>
+    <script src="transmit.js"></script>
+
+</head>
+
+<body>
+
+    <div class="jumbotron bg-transparent mb-0 radius-0">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-6">
+                    <h1 class="display-2">Paginu<span class="vim-caret">s</span></h1>
+                    <div class="lead mb-3 text-mono text-success">Genius password generator</div>
+                    <br>
+
+                    <form class="card p-2 bg-transparent p-5">
+                        <div class="mb-3">
+                            <label max="200" for="lenght">Set password length <span class="text-muted">(required)</span></label>
+                            <input type="number" class="form-control" id="lenght" placeholder="50" value="25">
+                            <div class="invalid-feedback">
+                            </div>
+                        </div>
+
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="caps" checked="checked">
+                            <label class="custom-control-label" for="caps">Use Capital Letters?</label>
+                        </div>
+
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="salt" checked="checked">
+                            <label class="custom-control-label" for="salt">Do you want to salt your password
+                                automatically?</label>
+                        </div>
+
+                        <br>
+                        <div class="mb-3">
+                            <label for="saltRange">How much percentage should be salted?</label>
+                            <select class="custom-select d-block w-100" id="saltRange" required>
+                                <option value="5">5%</option>
+                                <option value="10">10%</option>
+                                <option selected value="25">25%</option>
+                                <option value="50">50%</option>
+                                <option value="75">75%</option>
+                                <option value="100">100%</option>
+                            </select>
+                            <div class="invalid-feedback">
+
+                            </div>
+                        </div>
+
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="enforceSaltRange" checked="checked">
+                            <label class="custom-control-label" for="enforceSaltRange">Should the selected password length be maintained?</label>
+                        </div>
+
+                        <div class="text-mono">
+                            <a onclick="passwordReqPythonCall()" href="#!" title="Generate Password"
+                                class="btn btn-success btn-shadow px-3 my-2 ml-0 text-left">
+                                Generate Password
+                            </a>
+                            <a onclick="saltingReqPythonCall()" href="#!"
+                                class="btn btn-danger btn-shadow px-3 my-2 ml-0 ml-sm-1 text-left">
+                                Just salt string
+                            </a>
+                        </div>
+                    </form>
+
+                    <br>
+
+                    <div class="jumbotron" id="password">
+                        <h1 class="display-4">Text Password:</h1>
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1">You can also salt your string by pasting it in and
+                                hit the salt button!</label>
+                            <textarea id="textPassword" class="form-control rounded-0 textPassword"
+                                id="exampleFormControlTextarea1" rows="5"></textarea>
+                        </div>
+                        <hr class="my-4">
+                        <h1 class="display-4">Salted Password:</h1>
+                        <div class="form-group">
+                            <textarea class="form-control rounded-0 saltedPassword" id="exampleFormControlTextarea1"
+                                rows="5"></textarea>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+    </script>
+
+</body>
+
+</html>
