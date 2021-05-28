@@ -1,4 +1,3 @@
-@@ -0,0 +1,147 @@
 import random
 import string
 import tkinter
